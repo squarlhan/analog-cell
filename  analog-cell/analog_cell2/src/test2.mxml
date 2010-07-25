@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+<mx:Script>
+	<![CDATA[
+		import mx.collections.ArrayCollection ;
+		
+		[Bindable]
+		private var array:Array =
+		[
+		{name:"item1",source:"assets/Koala.jpg"},
+        {name:"item2",source:"assets/Lighthouse.jpg"},
+        {name:"item3",source:"assets/Penguins.jpg"},
+        {name:"item4",source:"assets/Tulips.jpg"}, 		
+		];
+	]]>
+</mx:Script>
+<!--<mx:Image width="100%" height="100%" source="assets/Lighthouse.jpg" />-->
+
+<mx:ArrayCollection id="acProducts" source="{array}"/>
+<mx:Panel id="panel" title="Repeater" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" 
+	width="100%" height="100%">
+	<mx:Tile direction="horizontal">
+		<mx:Repeater id="rp" dataProvider="{acProducts}" width="100%" height="100%" >
+			<mx:Panel headerHeight="0" borderStyle="solid" shadowDistance="0" width="100%" height="100%">
+				<mx:Image source="{(rp.dataProvider as ArrayCollection).getItemAt(rp.currentIndex).sourse }"/>
+				<mx:RadioButton label="{(rp.dataProvider as ArrayCollection).getItemAt(rp.currentIndex).name } "
+				 click="panel.status=(String(event.currentTarget.getRepeaterItem().name))"/>
+			</mx:Panel>
+		</mx:Repeater>
+	</mx:Tile>
+</mx:Panel>
+
+</mx:Application>

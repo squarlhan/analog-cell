@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%" 
+	currentState="MainMenu" verticalAlign="middle" backgroundImage="back_image12.jpg" creationComplete="init()">
+<mx:Style source="style/OSX.css" />
+<mx:Glow blurXTo="25" blurYTo="25" id="glow1" color="white" duration="500" target="{l1}" />
+<mx:Glow blurXTo="25" blurYTo="25" id="glow2" color="white" duration="500" target="{l2}" />
+<mx:Glow blurXTo="25" blurYTo="25" id="glow3" color="white" duration="500" target="{l3}" />
+<mx:Glow blurXTo="25" blurYTo="25" id="glow4" color="white" duration="500" target="{l4}" />
+<mx:Glow blurXTo="25" blurYTo="25" id="glow5" color="black" duration="500" target="{l5}" />
+<mx:Sequence id="sequence1" targets="{[label2,label1,label5,hbox2,hbox3,btnlogin,btncreat,vbox100]}">
+	<mx:Fade alphaFrom="0" alphaTo="1" duration="500" />
+	<mx:Glow blurXTo="25" blurYTo="25" color="white" duration="500" />
+</mx:Sequence>
+<mx:Sequence id="sequence2" targets="{[lable3,label1,ta1,ta2,ta3,ta4,ta5,ta6,ta7,ta8,okbtn,vbox100]}">
+	<mx:Fade alphaFrom="0" alphaTo="1" duration="500" />
+	<mx:Glow blurXTo="50" blurYTo="50" color="white" duration="500" />
+</mx:Sequence>
+<mx:transitions>
+	<mx:Transition fromState="Game" toState="MainMenu"  effect="{sequence1}" />
+	<mx:Transition fromState="MainMenu" toState="Game" effect="{sequence2}" />
+</mx:transitions>
+	<mx:states>
+		<mx:State 
+			name="Game" >
+			<mx:AddChild >
+				<mx:VBox x="462" y="123" width="714" height="431" id="creat"  verticalAlign="top" horizontalAlign="right"
+					paddingBottom="30" paddingLeft="30" paddingRight="10" paddingTop="15">
+					<mx:Label text="     Register" styleName="myfont2" id="lable3" width="689"/>
+					<mx:Label text="Register a UserID For Login" styleName="myfont" width="623" id="ta1"/>
+					<mx:HBox width="570" height="52" verticalAlign="middle" id="ta2">					
+					<mx:Label  text="     Username" width="115" id="newusername" height="28" styleName="myfont"/>
+					<mx:TextInput id="newuser" width="289"/>
+					</mx:HBox>
+					<mx:HBox width="510" height="49" verticalAlign="middle" id="ta3">
+					<mx:Label  text="     password" width="111" id="newpassword" height="29" styleName="myfont"/>
+					<mx:TextInput  id="newpass" width="288" displayAsPassword="true"/>
+					</mx:HBox>
+					<mx:HBox width="458" height="50" verticalAlign="middle" id="ta4">
+					<mx:Label  text=" Repassword" width="102" id="password" height="29" styleName="myfont"/>
+					<mx:TextInput  id="pass" width="287" displayAsPassword="true"/>
+					</mx:HBox>
+					<mx:Label x="26" y="123" text="     Check Code" width="402" height="29"  styleName="myfont" id="ta5"/>
+					<mx:HBox width="403" height="41" verticalAlign="middle" horizontalAlign="center" id="ta6">
+	               	<mx:TextInput  width="256" id="txtCheckCode"/>
+	            	<mx:Label  width="64" id="lblCheckCode" color="white"  styleName="myfont" text="{_str}" click="lbl_click()"/>
+	            	</mx:HBox>
+					<mx:Label text="                                 You can click the check code to change it" width="407" height="18" fontFamily="Arial" id="ta7" fontStyle="italic" textDecoration="underline" fontWeight="normal"/>
+				</mx:VBox>
+			</mx:AddChild>
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{game1}"/>
+			<mx:SetProperty target="{label1}" name="x" value="183"/>
+			<mx:SetProperty target="{label1}" name="y" value="29"/>
+			<mx:SetProperty target="{label1}" name="height" value="86"/>
+			<mx:SetProperty target="{label1}" name="width" value="783"/>
+			<mx:AddChild position="lastChild">
+				<mx:Button label="RETURN TO LOGIN" click="returnHandle()" styleName="myfont" width="174" x="960" y="562" height="51" id="ta8"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button label="OK" width="130" styleName="myfont" id="okbtn" x="733" y="562" height="51" click="okbtn_click()"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="MainMenu">
+			<mx:SetProperty target="{btnlogin}" name="x" value="120.75"/>
+			<mx:SetProperty target="{btnlogin}" name="y" value="38"/>
+			<mx:SetProperty target="{btncreat}" name="height" value="43" />
+			<mx:SetProperty target="{btncreat}" name="width" value="113.5"/>
+			<mx:SetProperty target="{btncreat}" name="x" value="407.75"/>
+			<mx:SetProperty target="{btncreat}" name="y" value="38"/>
+			<mx:SetProperty target="{btnlogin}" name="width" value="113.5"/>
+			<mx:SetProperty target="{btnlogin}" name="height" value="43"/>
+			<mx:RemoveChild target="{btnlogin}"/>
+			<mx:AddChild relativeTo="{canvas1}"  target="{btnlogin}"/>
+			<mx:SetProperty target="{canvas1}" name="height" value="140"/>
+			<mx:SetProperty target="{game1}" name="width" value="677"/>
+			<mx:SetProperty target="{label1}" name="width" value="830"/>
+			<mx:SetProperty target="{label1}" name="height" value="92"/>
+			<mx:SetProperty target="{game1}" name="height" value="451"/>
+			<mx:SetProperty target="{label1}" name="x" value="148"/>
+			<mx:SetProperty target="{label1}" name="y" value="41"/>
+			<mx:SetProperty target="{label2}" name="height" value="83"/>
+			<mx:SetProperty target="{hbox2}" name="width" value="589"/>
+			<mx:SetProperty target="{hbox3}" name="width" value="481"/>
+			<mx:SetProperty target="{txtUsername}" name="width" value="183"/>
+			<mx:SetProperty target="{txtPassword}" name="width" value="187"/>
+			<mx:SetProperty target="{label3}" name="width" value="125"/>
+			<mx:SetProperty target="{label4}" name="width" value="121"/>
+			<mx:SetProperty target="{game1}" name="x" value="555"/>
+			<mx:AddChild relativeTo="{hbox3}" >
+			</mx:AddChild>
+			<mx:SetProperty target="{vbox1}" name="width" value="652"/>
+			<mx:SetProperty target="{canvas1}" name="width" value="652"/>
+			<mx:RemoveChild target="{label2}"/>
+			<mx:AddChild relativeTo="{vbox1}" position="before" target="{label2}"/>
+			<mx:AddChild relativeTo="{vbox1}" position="before">
+				<mx:Label text="Please login with your userID and password" width="490" id="label5"/>
+			</mx:AddChild>
+			<mx:SetProperty target="{game1}" name="y" value="141"/>
+			<mx:SetProperty target="{hbox2}" name="height" value="40"/>
+			<mx:SetProperty target="{hbox3}" name="height" value="44"/>
+			<mx:SetStyle target="{label2}" name="fontSize" value="60"/>
+			<mx:SetStyle target="{label2}" name="fontStyle" value="normal"/>
+			<mx:SetStyle target="{label2}" name="textDecoration" value="normal"/>
+		</mx:State>
+	</mx:states>
+	<mx:Label text="Analog-cell2.0"  id="label1" width="946" height="111" styleName="myfont5" fontWeight="normal" 
+			  />
+	<mx:VBox id="game1" width="498" height="339" styleName="myfont"  
+		paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" x="637" y="138">
+		<mx:Label text="login"  id="label2" width="350" height="98" styleName="myfont2" fontWeight="normal" 
+			 paddingLeft="100" paddingRight="100"/>
+			  <mx:VBox width="100%" height="30%" verticalGap="10" 
+	           	paddingBottom="10" paddingLeft="30" paddingRight="30" paddingTop="10" verticalAlign="middle" id="vbox1" horizontalAlign="right">
+	           <mx:HBox  paddingLeft="10" paddingRight="10" verticalAlign="middle"  horizontalAlign="center" id="hbox2">
+	            	<mx:Label  text="username" styleName="myfont" id="label3"/>
+	            	<mx:TextInput  width="131" id="txtUsername"/>
+	           </mx:HBox>
+	           <mx:HBox  paddingLeft="10" paddingRight="10"  horizontalAlign="center" verticalAlign="middle"  id="hbox3">
+	           	<mx:Label  text="password" styleName="myfont"  id="label4"/>                   
+	             <mx:TextInput  width="131" id="txtPassword" displayAsPassword="true"/>
+	           </mx:HBox>  	
+	           </mx:VBox>	
+	           <mx:Canvas width="100%" height="60%" id="canvas1">
+     	           	<mx:Button label="REGISTER"  id="btncreat" styleName="myfont3"  x="152" y="31" click="click_btncreat()"/>
+     	           	<mx:Button label="LOG ON" id="btnlogin"  styleName="myfont3" click="click_btnlogin()" x="39" y="31" />
+	           </mx:Canvas>
+	</mx:VBox>
+	<mx:Script>
+		<![CDATA[
+		import mx.controls.Alert ;
+		import flash.display.Sprite ;
+		
+		private function click_btnlogin():void
+		{
+			//Alert.show(txtUsername.text) ;
+		    if (txtUsername.text != "" && txtPassword.text != "" )//判断数据库中是否有用户名和密码相匹配
+		    {
+	     		var strUrl:URLRequest = new URLRequest("configure.html");//这个地址是Flex生成的html文件的地址
+                navigateToURL(strUrl,"_self");
+            }
+            else
+            {
+            	Alert.show("Please input correct password !","Uncorrect Password") ;
+            }
+            //ExternalInterface.call("window.open","http://www.baidu.com/","_blank");
+		}
+		
+		private function returnHandle():void
+		{
+			currentState = "MainMenu" ;
+		}
+		
+		private function click_btncreat():void
+		{
+			currentState = "Game" ;
+		}
+			//下面是产生验证码的
+			private function init():void
+			{				
+			}
+			private function lbl_click():void
+			{
+				_str = GenerateCheckCode() ;
+			}
+			[Bindable]
+			private var _str:String = GenerateCheckCode() ;
+			private function GenerateCheckCode():String
+			{
+				var ran:Number;
+				var number:Number;
+				var code:String;
+				var checkCode:String="";
+				for(var i:int=0;i<4;i++)
+				{
+					ran=Math.random();
+					number=Math.round(ran*10000);
+					if(number%2==0)
+					code=String.fromCharCode(48+(number%10));
+					else
+					code=String.fromCharCode(65+(number%26));
+					checkCode+=code;
+				}
+				return checkCode ;
+			}
+			//下面是注册部分
+			private function if_exist ():Boolean
+			{
+				//进入数据库判断是否有这个账号
+				return false ;
+			}
+			private function okbtn_click():void
+			{
+				var tempB:Boolean = if_exist() ;
+				if(!tempB)
+				{
+			    	if ((pass.text == newpass.text)&&txtCheckCode.text == _str)
+			    	{
+			    		Alert.show(" Registering Success!") ;
+			    		//将用户信息存入数据库
+			    	}
+			    	else
+			    	{
+			    		Alert.show("It has something wrong with your passord or check code!") ;
+			    	}
+			    }
+			    else
+			    {
+			    	Alert.show("The userID has already bean used!") ;
+			    }
+			}
+			//设置label 鼠标的样式
+			private function l1_click():void
+			{
+				Alert.show("analog-cell1.0 .......") ;
+			}
+			private function l2_click():void
+			{
+				Alert.show("Electronic-cell is a ....","Electronic-Cell",Alert.CANCEL,null,null,null,Alert.CANCEL) ;
+			}
+			private function l3_click():void
+			{
+				Alert.show("We are from JLU CCST ....","About Us",Alert.CANCEL,null,null,null,Alert.CANCEL) ;
+			}
+			private function l4_click():void
+			{
+				//...
+				var strUrl1:URLRequest = new URLRequest("help_page.html");//这个地址是Flex生成的html文件的地址
+                navigateToURL(strUrl1,"_self");
+			}
+			//下面是设置动画效果的
+			private function l_over():void
+			{
+				glow1.play() ;
+			}
+			private function l5_over():void
+			{
+				glow5.play() ;
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox x="108" y="221" height="256" width="327" backgroundColor="black" backgroundAlpha="0.3" dropShadowEnabled="true" id="vbox100">
+		<mx:Label text="         Brief Introduction" styleName="myfont4" width="321" fontSize="25"/>
+		<mx:Label text="About analog-cell1.0" id="l1" width="222" styleName="myfont3" click="l1_click()" mouseOver="l_over()" />
+		<mx:Label text="About Electronic Cell" id="l2" width="222" styleName="myfont3" mouseOver="glow2.play()" click="l2_click()"/>
+		<mx:Label text="About Us" width="222" styleName="myfont3" click="l3_click()" id="l3" mouseOver="glow3.play()"/>
+		<mx:Label width="223" height="59" text="How To Use It" styleName="myfont3" id="l4" mouseOver="glow4.play()" click="l4_click()"/>
+		<mx:Label width="323" text="             Click The Item Your Want To Know !" height="28" styleName="myfont"/>
+	</mx:VBox>
+	<mx:Label x="865" y="10" text="Welcome to analogcell2.0" width="233" styleName="myfont3" id="label6"/>
+	<mx:Label x="954" y="49" text="Designed by " width="113" styleName="myfont3" id="label7"/>
+	<mx:Label x="1075" y="43.9" text="LCH" styleName="myfont6" width="106" height="48" id="l5" mouseOver="l5_over()"/>
+</mx:Application>

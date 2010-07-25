@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+<mx:Style source="style/OSX.css"/>
+	<mx:Label x="266" y="150" text="HELP!!!" width="304" height="159" styleName="myfont5"/>
+	
+</mx:Application>
