@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"  creationComplete="initApp()" backgroundImage="123.jpg" verticalAlign="middle" horizontalAlign="center">
-<mx:states>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="initApp()" backgroundImage="backGround.jpg">
+	<mx:states>
+		<mx:State name="main"/>
 		<mx:State name="ChangeCondition">
-			<mx:RemoveChild target="{panel1}"/>
 			<mx:AddChild position="lastChild">
-				<mx:Panel x="98" y="98" width="549" height="323" layout="absolute" >
+				<mx:Panel x="95" y="40" width="549" height="323" layout="absolute" >
 					<mx:Text x="28" y="24" text="Please input the conditions:" width="243" height="43" fontFamily="Georgia" fontSize="19"/>
 					<mx:TextArea x="206" y="92" height="30" id="newPH"/>
 					<mx:Text x="101" y="93" text="PH:" width="122" height="43" textAlign="center" fontFamily="Georgia" fontSize="17" fontStyle="italic" fontWeight="bold"/>
@@ -16,11 +16,25 @@
 					<mx:Button x="422" y="251" label="Go Back" id="Nochange" click="changeBack()"/>
 				</mx:Panel>
 			</mx:AddChild>
+			<mx:RemoveChild target="{MainPlayer}"/>
+			<mx:RemoveChild target="{hbox1}"/>
+			<mx:RemoveChild target="{MainPlay}"/>
+			<mx:RemoveChild target="{label1}"/>
+			<mx:RemoveChild target="{hbox2}"/>
+			<mx:RemoveChild target="{StartGrid}"/>
+			<mx:RemoveChild target="{StartContions}"/>
+			<mx:RemoveChild target="{mychart}"/>
+			<mx:RemoveChild target="{DataGrid}"/>
+			<mx:RemoveChild target="{vbox1}"/>
+			<mx:RemoveChild target="{Help}"/>
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{label3}"/>
+			<mx:RemoveChild target="{vbox2}"/>
 		</mx:State>
-		<mx:State name="main"/>
 	</mx:states>
 <mx:Script>
 	<![CDATA[
+	  import mx.events.CollectionEvent;
 	  import mx.charts.chartClasses.AxisLabelSet;
       import mx.formatters.DateFormatter;
       import mx.charts.chartClasses.IAxis;
@@ -28,60 +42,43 @@
 
       [Bindable] 
       public var testDatas:ArrayCollection;
-            
+      [Bindable]  
+      public var StartConditions:ArrayCollection=new ArrayCollection([{PH:"7.0",Power:"120",Temp:"37`c"}]);  
       [Bindable]
       private var maxDate:Date;
       [Bindable]
       private var minDate:Date;
-            
+      [Bindable]      
       private var timer:Timer;
       private var dateFormat:DateFormatter = new DateFormatter();
       private var dateVar:Date;
-	private function initApp():void//动画界面初始化函数
+      private var Start:int=120//testData的初始化值
+      import mx.controls.Alert;
+	//动画界面初始化函数
+	private function initApp():void
 	{
-		//初始化曲线图
-		dateFormat.formatString = "HH:NN:SS";      
-        minDate = new Date();
-        var dx:Date = new Date();
-        dx.setMinutes(dx.getMinutes()+1, dx.getSeconds(), dx.getMilliseconds());
-        maxDate = dx;
-                
-        dateVar = new Date();
-        testDatas = new ArrayCollection([{date: dateVar, valueTest: 120} ]);
-                   
-        timer =  new Timer(1000);
-        timer.addEventListener(TimerEvent.TIMER, getDatas)
-        timer.start();  
-        //此处还应添加其他初始化内容           
+		//此处还应添加其他初始化内容
+		
     }
-	import mx.controls.Alert;
-	private function ChangeConditions():void//改变状态按钮触发函数
+	//改变状态按钮触发函数
+	private function ChangeConditions():void
 	
 	{
 		Alert.show("Please input the condition!");
-		currentState="ChangeCondition";
+		currentState="ChangeCondition"; 
 	}
-	private function changeBack():void//从changeConditions不改变反应条件返回主状态
+	//从changeConditions不改变反应条件返回主状态
+	private function changeBack():void
 	{
 		Alert.show("you have no changes and back to go on!");
 		currentState="main";
-	}	
-	private function changeOK():void//改变反应条件返回函数有“OK”触发
+	}
+	//改变反应条件返回函数有“OK”触发	
+	private function changeOK():void
 	{
 		Alert.show("OK!We change the conditions now!");
 		currentState="main";
-		if(newPH.text!="")
-		{
-			
-		}
-		if(newTemp.text!="")
-		{
-			StartTemp.dataField=newTemp.text;
-		}
-		if(newPower.text!="")
-		{
-			StartPower.dataField=newPower.text;
-		}
+		changeNowConditions();
 		//此处还应有内部数据改变
 	}
 	private function mylabel(labelValue:Object, previousValue:Object, d:IAxis):String
@@ -89,8 +86,8 @@
         var str:String = dateFormat.format(labelValue);
         return str;
     }
-            
-    private function getDatas(et:Event):void
+    //LineChart 内部函数         
+   private function getDatas(et:Event):void
    {
        var valueTestValue:int = Math.random()*50;
        var dm:Date = new Date();
@@ -108,84 +105,128 @@
        testDatas.addItem({date: dateVar, valueTest: valueTestValue});      
                 
   }
-   private function changeNowCondiyions():void
+  private function StartGo():void
+  {
+  	    dateFormat.formatString = "HH:NN:SS";      
+        minDate = new Date();
+        var dx:Date = new Date();
+        dx.setMinutes(dx.getMinutes()+1, dx.getSeconds(), dx.getMilliseconds());
+        maxDate = dx;
+                
+        dateVar = new Date();
+        testDatas = new ArrayCollection([{date: dateVar, valueTest: Start} ]);
+                   
+        timer =  new Timer(1000);
+        timer.addEventListener(TimerEvent.TIMER, getDatas)
+        timer.start();  
+       
+  }
+  //此处修改now的显示值
+   private function changeNowConditions():void
    {
+   	     StartConditions.addItem({PH:newPH.text,Power:newPower.text,Temp:newTemp.text});
+   	     Start=newPower.text as int;
+   	     testDatas.setItemAt(Start,1);
    }
-   private function Go_click():void
+   private function endGo():void
    {
-     	var strUrl:URLRequest = new URLRequest("configure.html");//这个地址是Flex生成的html文件的地址
-        navigateToURL(strUrl,"_self");
+   	timer.stop();
    }
-	]]>
+   private function ContinueGo():void
+   {
+   	
+   }
+  private function ShowPHState():void
+  {
+  
+  }
+]]>
 </mx:Script>
-<mx:XMLListCollection id="dp">
-	<mx:source>
-		<mx:XMLList id="Data" xmlns="">
-			<quote PH="7.0" Power="120" Temp="37`C"/>
-		</mx:XMLList>
-	</mx:source>
-</mx:XMLListCollection>
-	<mx:Panel  width="1158" height="542" layout="absolute" fontFamily="Georgia" id="panel1" >
-		<mx:VideoDisplay x="10" y="10" width="533" height="210" source="俞敏洪励志演讲（完美版）.WMV" autoPlay="true"/>
-		<mx:Button x="179" y="277" label=" Change Condition" width="167" height="42" click="ChangeConditions()"/>
-		<mx:HBox x="10" y="225" width="533" height="34">
-			<mx:Button label="Start" id="start" height="29" width="122"/>
-			<mx:Button label="Hold" id="holdPlay" width="116" height="29"/>
-			<mx:Button label="Restart" id="restart" width="113" height="32"/>
-			<mx:Button label="Stop" id="stop" width="125" height="31"/>
-		</mx:HBox>
-		<mx:LineChart id="mychart" height="217" width="417" paddingRight="5" paddingLeft="5" showDataTips="true"  x="558">
-            
-            <mx:horizontalAxis>
-                <mx:DateTimeAxis dataUnits="seconds" interval="5" minimum="{minDate}"   maximum="{maxDate}" labelFunction="mylabel" title="Time"/> 
-            </mx:horizontalAxis>
-
-            <mx:verticalAxis>
-                <mx:LinearAxis baseAtZero="true" title="Power" />
-            </mx:verticalAxis>
-
-            <mx:series>
-               <mx:LineSeries yField="valueTest" xField="date" displayName="TestData" dataProvider="{this.testDatas}"/>
-            </mx:series>
-        </mx:LineChart>
-		<mx:VBox x="983" y="19" height="168" width="108">
-			<mx:Button label="All" id="ShowAll" width="108" height="33"/>
-			<mx:Button label="Power" id="ShowPower" width="108" height="31"/>
-			<mx:Button label="PH" id="ShowPH" width="105" height="32"/>
-			<mx:Button label="Temperature" id="ShowTemperature" width="105" height="29"/>
-		</mx:VBox>
-		<mx:HBox width="533" x="558" y="225" height="34">
-			<mx:Button label="Hold" id="HoldChart" width="148" height="28"/>
-			<mx:Button label="CountNow" id="countChart" width="181" height="28"/>
-			<mx:Button label="Amplify" id="AmplifyChart" width="185" height="27"/>
-		</mx:HBox>
-		<mx:Text x="10" y="284" text="The Start Conditions" width="190" height="34" fontFamily="Georgia" fontWeight="bold" fontSize="15"/>
-		<mx:VBox x="368" y="277" height="213" width="88">
-			<mx:Button label="CountNow" width="83" height="84" id="CountData"/>
-			<mx:Button label="Reset" width="83" height="96" id="Resetdata"/>
-		</mx:VBox>
-		<mx:Text x="464" y="288" text="Now Conditions" width="165" height="30" fontFamily="Georgia" fontWeight="bold" fontSize="16"/>
-		<mx:VBox height="172" width="100" x="983" y="292">
-			<mx:Button label="Exit" width="97" height="31"/>
-			<mx:Button label="Go back" width="98" height="34" click="Go_click()"/>
-			<mx:Button label="Help" width="95" height="34"/>
-			<mx:Button label="About" width="98" height="39"/>
-		</mx:VBox>
-		<mx:DataGrid y="326" width="444" height="108" id="DataGrid" dataProvider="{this.testDatas}" x="494" textAlign="center">
-			<mx:columns>
-			    <mx:DataGridColumn headerText="Time" dataField="date"/>
-				<mx:DataGridColumn headerText="PH" />
-				<mx:DataGridColumn headerText="Power" dataField="valueTest"/>
-				<mx:DataGridColumn headerText="Temperature" />
-			</mx:columns>
-		</mx:DataGrid>
-		<mx:DataGrid x="29" y="337" height="97" id="StartGrid"  dataProvider="{dp}" editable="true" textAlign="center">
-			<mx:columns>
-				<mx:DataGridColumn id="StartPH" headerText="PH" dataField="@PH"/>
-				<mx:DataGridColumn id="StartPower" headerText="Power" dataField="@Power"/>
-				<mx:DataGridColumn id="StartTemp" headerText="Temperature" dataField="@Temp"/>
-			</mx:columns>
-		</mx:DataGrid>
-	</mx:Panel>
-	
+<mx:HBox width="100%" height="100%" >
+	    <!--动画播放部分代码-->
+	    <mx:VBox width="60%" height="100%">
+	    <mx:VBox id="MainPlay" width="98%" height="60%" x="10" y="10">
+	    	<mx:Canvas id="MainPlayer" width="98%" height="90%" label="动画"  borderStyle="inset" backgroundImage="cell.bmp">
+	    		<!--此处为动画播放部分具体配置-->
+	    		<mx:Label text="动画Flash" fontFamily="Times New Roman" fontSize="35" color="#E53F29" x="224.5" y="107"/>
+	    	</mx:Canvas>
+	    	<mx:HBox width="100%" height="8%" id="hbox1" paddingLeft="10" paddingRight="10">
+			    <mx:Button label="Start" id="start" height="98%" width="24%" click="StartGo()"/>
+			    <mx:Button label="Hold" id="holdPlay" width="24%" height="98%" click="endGo()"/>
+			    <mx:Button label="Restart" id="restart" width="24%" height="98%" />
+			    <mx:Button label="Stop" id="stop" width="24%" height="98%" />
+		    </mx:HBox>
+	    </mx:VBox>
+	    <!--初始状态部分代码-->
+	    <mx:HBox width="98%" height="38%">
+	    <mx:VBox id="StartContions" width="78%" height="98%" paddingLeft="10" paddingRight="10" borderStyle="outset" x="10" y="331">
+	    	<mx:HBox width="100%" height="50" id="hbox2">
+	    		<mx:Label width="98%" text="Start Conditions :" fontFamily="Georgia" color="#203C0B" fontWeight="bold" fontStyle="italic" fontSize="27" height="28%" id="label1"/>
+	    	</mx:HBox>
+	    	<mx:DataGrid height="35%" id="StartGrid"  dataProvider="{StartConditions}" textAlign="center" width="98%">
+			    <mx:columns>
+				    <mx:DataGridColumn id="StartPH" headerText="PH" dataField="PH"/>
+				    <mx:DataGridColumn id="StartPower" headerText="Power" dataField="Power"/>
+				    <mx:DataGridColumn id="StartTemp" headerText="Temperature" dataField="Temp"/>
+			    </mx:columns>
+		    </mx:DataGrid>
+		    <mx:DataGrid height="35%" id="StartGrid1" dataProvider="" textAlign="center" width="98%">
+		        <mx:columns>
+		        	<mx:DataGridColumn id="StartEnzyme1" headerText="Enzyme1"/>
+		        	<mx:DataGridColumn id="StartEnzyme2" headerText="Enzyme1"/>
+		        	<mx:DataGridColumn id="StartEnzyme3" headerText="Enzyme1"/>
+		        	<mx:DataGridColumn id="StartEnzyme4" headerText="Enzyme1"/>
+		        </mx:columns>
+		    </mx:DataGrid>
+	    </mx:VBox>
+	    <mx:VBox  x="482" y="331" width="20%" height="98%" textAlign="center" id="vbox2">
+	        <mx:Button id="ChangeCondition" label="ChangeConditions" width="100%" height="15%" fontSize="10" fontFamily="Georgia" click="ChangeConditions()"/>
+	    	<mx:Button id="GoBack" label="GoBack" width="100%" height="15%"/>
+	    	<mx:Button id="Exit" label="Exit" width="100%" height="15%"/>
+	    	<mx:Button id="Help" label="Help" width="100%" height="15%"/>
+	    	<mx:Label width="125" text="Analog-cell" height="18%" fontWeight="bold" fontStyle="italic" textDecoration="underline" color="#DD241B" fontSize="17" id="label3"/>
+	    	<mx:Label width="125" text="2.0" height="18%" color="#BF1010" fontSize="18" fontWeight="bold" fontStyle="italic" textDecoration="underline" id="label2"/>
+	    </mx:VBox>
+	    </mx:HBox>
+	    </mx:VBox>
+	    <!--图表部分代码-->
+	    <mx:VBox  x="615" y="10" width="38%" height="100%" paddingLeft="10" paddingRight="10" id="vbox1" borderStyle="outset">
+	    	<mx:LineChart id="mychart" height="50%" width="100%" paddingRight="5" paddingLeft="5" showDataTips="true" fontWeight="bold" color="#11B2D5" fontFamily="Arial" textAlign="center">
+			    <mx:horizontalAxis>
+			        <mx:DateTimeAxis dataUnits="seconds" interval="5" minimum="{minDate}"   maximum="{maxDate}" labelFunction="mylabel" title="Time"/> 
+			    </mx:horizontalAxis>
+			        
+			    <mx:verticalAxis>
+			        <mx:LinearAxis baseAtZero="true" title="Power" />
+			    </mx:verticalAxis>
+			        
+			    <mx:series>
+			        <mx:LineSeries yField="valueTest" xField="date" displayName="Power" dataProvider="{this.testDatas}"/>
+			    </mx:series>
+	        </mx:LineChart>	
+	        <mx:HBox width="100%" height="5%" >
+	        	<mx:Button id="PH" label="PH" height="98%" width="24%"/>
+	        	<mx:Button id="Power" label="Power" height="98%" width="24%"/>
+	        	<mx:Button id="Temperature" label="Temperature" height="98%" width="24%"/>
+	        	<mx:Button id="ALL" label="ALL" height="98%" width="24%"/>
+	        </mx:HBox>
+	        <mx:Label text="Now Conditions:"  fontFamily="Georgia" fontSize="28" fontWeight="bold" fontStyle="italic" color="#116274" height="10%" width="98%"/>
+	        <mx:DataGrid width="98%" height="18%" id="DataGrid" dataProvider="{this.testDatas}" textAlign="center">
+			    <mx:columns>
+			        <mx:DataGridColumn headerText="Time" dataField="date"/>
+				    <mx:DataGridColumn headerText="PH" />
+				    <mx:DataGridColumn headerText="Power" dataField="valueTest"/>
+				    <mx:DataGridColumn headerText="Temperature" />
+			     </mx:columns>
+		    </mx:DataGrid>
+		    <mx:DataGrid id="EnzymeGrid" width="98%" height="18%" textAlign="center">
+		    	<mx:columns>
+		    		<mx:DataGridColumn headerText="enzyme1"/>
+		    		<mx:DataGridColumn headerText="enzyme2"/>
+		    		<mx:DataGridColumn headerText="enzyme3"/>
+		    		<mx:DataGridColumn headerText="enzyme4"/>
+		    	</mx:columns>
+		    </mx:DataGrid>
+	    </mx:VBox>
+</mx:HBox>
 </mx:Application>
